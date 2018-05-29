@@ -48,49 +48,23 @@ public class GameWindow extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    gameCanvas.positionXPlayer -=9;
-                    if(gameCanvas.positionXPlayer >1024){
-                        gameCanvas.positionXPlayer = 0;
-                        gameCanvas.positionYPlayer = random.nextInt(600);
-                    }else if(gameCanvas.positionXPlayer < 0){
-                        gameCanvas.positionXPlayer = 1024;
-                        gameCanvas.positionYPlayer = random.nextInt(600);
-                    }
-                }if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    gameCanvas.positionXPlayer +=9;
-                    if(gameCanvas.positionXPlayer >1024){
-                        gameCanvas.positionXPlayer = 0;
-                        gameCanvas.positionYPlayer = random.nextInt(600);
-                    }else if(gameCanvas.positionXPlayer < 0){
-                        gameCanvas.positionXPlayer = 1024;
-                        gameCanvas.positionYPlayer = random.nextInt(600);
-                    }
+                    gameCanvas.player.velocity.x = -9;
                 }
-                if(e.getKeyCode()==KeyEvent.VK_DOWN){
-                    gameCanvas.positionYPlayer +=9;
-                    if(gameCanvas.positionYPlayer >600){
-                        gameCanvas.positionYPlayer = 0;
-                        gameCanvas.positionXPlayer = random.nextInt(1024);
-                    }else if(gameCanvas.positionYPlayer < 0){
-                        gameCanvas.positionYPlayer = 600;
-                        gameCanvas.positionXPlayer = random.nextInt(1024);
-                    }
+                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+                    gameCanvas.player.velocity.x = 9;
+                }
+                if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+                    gameCanvas.player.velocity.y = 9;
                 }
                 if(e.getKeyCode()==KeyEvent.VK_UP){
-                    gameCanvas.positionYPlayer -=9;
-                    if(gameCanvas.positionYPlayer >600){
-                        gameCanvas.positionYPlayer = 0;
-                        gameCanvas.positionXPlayer = random.nextInt(1024);
-                    }else if(gameCanvas.positionYPlayer < 0){
-                        gameCanvas.positionYPlayer = 600;
-                        gameCanvas.positionXPlayer = random.nextInt(1024);
-                    }
+                    gameCanvas.player.velocity.y = -9;
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-
+                gameCanvas.player.velocity.x = 0;
+                gameCanvas.player.velocity.y = 0;
             }
         });
     }

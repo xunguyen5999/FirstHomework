@@ -16,8 +16,8 @@ public class Background {
     }
 
 
-    public void backgroundRender(Graphics graphics){
-        graphics.setColor(color);
+    public void render(Graphics graphics){
+        graphics.setColor(this.color);
         graphics.fillRect(this.x,this.y,this.width,this.height);
     }
 }

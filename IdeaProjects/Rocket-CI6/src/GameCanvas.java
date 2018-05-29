@@ -11,10 +11,12 @@ import java.util.Random;
 
 public class GameCanvas extends JPanel {
 
+
     BufferedImage playerImage;
     BufferedImage backBuffered;
     Graphics graphics;
-    Player player;
+    public Player player;
+    Background background;
 
 
     List<Star> stars;
@@ -48,6 +50,9 @@ public class GameCanvas extends JPanel {
         //this.playerImage = this.loadImage("resources-rocket-master/resources/images/circle.png");
         this.setupStar();
         this.setupEnemy();
+        this.background = new Background(0,0,1024,600,Color.BLACK);
+        this.player = new Player();
+
 
     }
 
@@ -60,55 +65,28 @@ public class GameCanvas extends JPanel {
         this.enemies = new ArrayList<>();
     }
 
-    private void createPlayer(){
-        Player player = new Player(this.loadImage("resources-rocket-master/resources/images/circle.png"),
-                positionXPlayer,
-                positionYPlayer,
-                30,
-                30,
-                3,
-                3
-        );
-        player.render(graphics);
-    }
     @Override
     protected void paintComponent(Graphics g) {// lat backbuffered
         g.drawImage(this.backBuffered,0,0,null);
-//        g.setColor(Color.BLACK);
-//        g.fillRect(0,0,1024,600);
-//        g.drawImage(this.starImage,positionXStar,positionYStar,10,10,null);
-//        g.drawImage(this.enemyImage,positionXEnemy,positionYEnemy,20,20,null);
-//        g.drawImage(this.playerImage,positionXPlayer,positionYPlayer,30,30,null);
     }
 
     public void renderAll(){
         //this.renderBackground();
-        this.createBackground();
-        this.createPlayer();
+        this.background.render(this.graphics);
         this.stars.forEach(star->star.render(graphics));
         this.enemies.forEach(enemy -> enemy.render(graphics));
-        //this.graphics.drawImage(this.playerImage,positionXPlayer,positionYPlayer,30,30,null);
-
+        this.player.render(this.graphics);
         this.repaint();
 
     }
 
-//    private void renderBackground(){
-//        this.graphics.setColor(Color.BLACK);
-//        this.graphics.fillRect(0,0,1024,600);
-//
-//    }
-
-    public void createBackground(){
-      Background background = new Background(0,0,1024,600,Color.BLACK);
-      background.backgroundRender(graphics);
-    }
 
     public void runAll(){
         this.stars.forEach(star -> star.run());
-        this.enemies.forEach(enemy -> enemy.run(positionXPlayer,positionYPlayer));
+        this.enemies.forEach(enemy -> enemy.run(this.player.position));
         this.createStar();
         this.createEnemy();
+        this.player.run();
     }
 
     private void createStar(){
@@ -129,15 +107,11 @@ public class GameCanvas extends JPanel {
     }
 
     private void createEnemy(){
-        if(this.countEnemy==200){
+        if(this.countEnemy==150){
             Enemy enemy = new Enemy(
-                    this.loadImage("resources-rocket-master/resources/images/circle.png"),
-                    this.random.nextInt(1024),
-                    this.random.nextInt(600),
-                    15,15,
-                    (this.random.nextInt(2)+1)*randomNum(),
-                    (this.random.nextInt(2)+1)*randomNum()
+                    this.loadImage("resources-rocket-master/resources/images/circle.png"),20,20
             );
+            enemy.position.set(random.nextInt(1024),random.nextInt(600));
             this.enemies.add(enemy);
             this.countEnemy = 0;
         }else{
