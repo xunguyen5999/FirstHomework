@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLOutput;
 import java.util.Random;
 
 
@@ -48,23 +49,24 @@ public class GameWindow extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    gameCanvas.player.velocity.x = -9;
+                    gameCanvas.player.angle -= 10.0;
                 }
                 if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    gameCanvas.player.velocity.x = 9;
+                    gameCanvas.player.angle += 10.0;
                 }
-                if(e.getKeyCode()==KeyEvent.VK_DOWN) {
-                    gameCanvas.player.velocity.y = 9;
-                }
+                Vector2D rotate = (new Vector2D(3,0)).rotate(gameCanvas.player.angle);
+                gameCanvas.player.velocity.set(rotate);
                 if(e.getKeyCode()==KeyEvent.VK_UP){
-                    gameCanvas.player.velocity.y = -9;
+                    gameCanvas.player.velocity.multiply(3);
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                gameCanvas.player.velocity.x = 0;
-                gameCanvas.player.velocity.y = 0;
+                if(e.getKeyCode()==KeyEvent.VK_UP){
+                    Vector2D rotate = (new Vector2D(3,0)).rotate(gameCanvas.player.angle);
+                    gameCanvas.player.velocity.set(rotate);
+                }
             }
         });
     }
