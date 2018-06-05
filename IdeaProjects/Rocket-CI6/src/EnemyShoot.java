@@ -3,7 +3,7 @@ import java.util.List;
 
 public class EnemyShoot {
 
-    public List<BulletEnemy> bulletEnemies;
+    public List<Bullet> bulletEnemies;
     private int count = 0;
     public EnemyShoot(){
         this.bulletEnemies = new ArrayList<>();
@@ -11,10 +11,10 @@ public class EnemyShoot {
     public void run(Enemy enemy){
         //create bullet
         if(count == 40) {
-            BulletEnemy bulletEnemy = new BulletEnemy();
-            bulletEnemy.position.set(enemy.position);
-            bulletEnemy.velocity.set(enemy.velocity.multiply(3));
-            this.bulletEnemies.add(bulletEnemy);
+            Bullet bullet = new Bullet();
+            bullet.position.set(enemy.position);
+            bullet.velocity.set(enemy.velocity.multiply(3));
+            this.bulletEnemies.add(bullet);
             count=0;
         }else{
             count++;

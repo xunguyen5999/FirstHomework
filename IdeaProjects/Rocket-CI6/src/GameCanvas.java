@@ -13,12 +13,10 @@ public class GameCanvas extends JPanel {
     Graphics graphics;
 
     Background background;
-    List<Star> stars;
-    List<Enemy> enemies;
     public Player player;
     private Random random = new Random();
-    private int countStar = 0;
-    private int countEnemy = 0;
+    private EnemySpawner enemySpawner = new EnemySpawner();
+    private StarSpawner starSpawner = new StarSpawner();
 
     public GameCanvas() {
         this.setSize(1024, 600);
@@ -36,21 +34,15 @@ public class GameCanvas extends JPanel {
     private void setupCharacter() {
         this.background = new Background();
         this.background.color = Color.BLACK;
-        this.enemies = new ArrayList<>();
         this.setupPlayer();
-        this.setupStar();
     }
 
     private void setupPlayer(){
         this.player = new Player();
         this.player.position.set(500, 300);
-        this.player.velocity.set(4,0);
+        this.player.playerMove.velocity.set(4,0);
     }
 
-    private void setupStar() {
-        this.stars = new ArrayList<>();
-
-    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -61,64 +53,35 @@ public class GameCanvas extends JPanel {
     public void renderAll() {
         this.background.render(this.graphics);
 
-        this.stars.forEach(star -> star.render(graphics));
-
-        this.enemies.forEach(enemy -> enemy.render(graphics));
+        this.starSpawner.stars.forEach(star -> star.render(graphics));
 
         this.player.render(this.graphics);
+
+        this.enemySpawner.enemies.forEach(enemy -> enemy.render(graphics));
 
         this.repaint();
     }
 
     public void runAll() {
-        this.createStar();
-        this.stars.forEach(star -> star.run());
+        this.starSpawner.stars.forEach(star -> star.run());
 
-        this.createEnemy();
-        this.enemies.forEach(enemy -> enemy.run());
-        this.enemies.forEach(enemy -> {
-            Vector2D velocity = player.position.subtract(enemy.position).normalize().multiply(random.nextInt(4)+1);
+
+
+        this.enemySpawner.enemies.forEach(enemy -> enemy.run());
+        this.enemySpawner.enemies.forEach(enemy -> {
+            Vector2D velocity = player.position.subtract(enemy.position).normalize().multiply(random.nextInt(2)+1);
             enemy.velocity.set(velocity);
         });
-
+        this.enemySpawner.run();
+        this.starSpawner.run();
         this.player.run();
     }
 
-    private void createStar() {
-        if (this.countStar == 20) {
-            Star star = new Star();
-            star.image = this.loadImage("resources-rocket-master/resources/images/star.png");
-            star.position.set(1024, this.random.nextInt(600));
-            star.velocity.set(-(this.random.nextInt(5) + 1), 0);
-            star.width = 5;
-            star.height = 5;
-            this.stars.add(star);
-            this.countStar = 0;
-        } else {
-            this.countStar += 1;
-        }
-
-    }
-
-    private void createEnemy() {
-        if (this.countEnemy == 200) {
-            Enemy enemy = new Enemy();
-            enemy.position.set(random.nextInt(1024),random.nextInt(600));
-            this.enemies.add(enemy);
-            this.countEnemy = 0;
-
-        } else {
-            this.countEnemy += 1;
-        }
-    }
 
 
-    private BufferedImage loadImage(String path) {
-        try {
-            return ImageIO.read(new File(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
+
+
+
+
 }
