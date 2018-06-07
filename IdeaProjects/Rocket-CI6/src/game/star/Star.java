@@ -1,6 +1,10 @@
+package game.star;
+
+import base.GameObject;
+import base.Vector2D;
+import renderer.ImageRenderer;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Star extends GameObject {
 

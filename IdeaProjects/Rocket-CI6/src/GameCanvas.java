@@ -1,22 +1,20 @@
-import javax.imageio.ImageIO;
+
+import base.GameObjectManager;
+import game.background.Background;
+import game.enemy.EnemySpawner;
+import game.player.Player;
+import game.star.StarSpawner;
+import input.KeyboardInput;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class GameCanvas extends JPanel {
     BufferedImage backBuffered;
     Graphics graphics;
 
-    Background background;
     public Player player;
-    private Random random = new Random();
-    private EnemySpawner enemySpawner = new EnemySpawner();
-    private StarSpawner starSpawner = new StarSpawner();
 
     public GameCanvas() {
         this.setSize(1024, 600);
@@ -32,17 +30,18 @@ public class GameCanvas extends JPanel {
     }
 
     private void setupCharacter() {
-        this.background = new Background();
-        this.background.color = Color.BLACK;
+        GameObjectManager.instance.add(new Background());
         this.setupPlayer();
+        GameObjectManager.instance.add(new StarSpawner());
+        GameObjectManager.instance.add(new EnemySpawner());
     }
 
-    private void setupPlayer(){
+    private void setupPlayer() {
         this.player = new Player();
         this.player.position.set(500, 300);
-        this.player.playerMove.velocity.set(4,0);
+        this.player.playerMove.velocity.set(4, 0);
+        GameObjectManager.instance.add(this.player);
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -51,37 +50,12 @@ public class GameCanvas extends JPanel {
     }
 
     public void renderAll() {
-        this.background.render(this.graphics);
-
-        this.starSpawner.stars.forEach(star -> star.render(graphics));
-
-        this.player.render(this.graphics);
-
-        this.enemySpawner.enemies.forEach(enemy -> enemy.render(graphics));
-
+        GameObjectManager.instance.renderAll(this.graphics);
         this.repaint();
     }
 
     public void runAll() {
-        this.starSpawner.stars.forEach(star -> star.run());
-
-
-
-        this.enemySpawner.enemies.forEach(enemy -> enemy.run());
-        this.enemySpawner.enemies.forEach(enemy -> {
-            Vector2D velocity = player.position.subtract(enemy.position).normalize().multiply(random.nextInt(2)+1);
-            enemy.velocity.set(velocity);
-        });
-        this.enemySpawner.run();
-        this.starSpawner.run();
-        this.player.run();
+        GameObjectManager.instance.runAll();
+        KeyboardInput.instance.reset();
     }
-
-
-
-
-
-
-
-
 }

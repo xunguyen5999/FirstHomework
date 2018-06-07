@@ -1,8 +1,8 @@
-import javax.imageio.ImageIO;
+package renderer;
+
+import base.Vector2D;
+
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class BackgroundRenderer implements Renderer {
     public Vector2D position;
