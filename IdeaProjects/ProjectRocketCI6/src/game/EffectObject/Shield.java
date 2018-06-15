@@ -7,6 +7,8 @@ import physic.BoxCollider;
 import physic.PhysicBody;
 import renderer.ImageRenderer;
 
+import java.awt.*;
+
 public class Shield extends GameObject implements PhysicBody {
 
 
@@ -15,7 +17,7 @@ public class Shield extends GameObject implements PhysicBody {
 
     public Shield() {
         this.boxCollider = new BoxCollider(30,30);
-        this.renderer = new ImageRenderer("resources/images/powerup_shield.png",30,30);
+        this.renderer = new ImageRenderer("resources/images/powerup_shield.png",30,30, Color.pink);
         this.frameCounter = new FrameCounter(300);
     }
 
