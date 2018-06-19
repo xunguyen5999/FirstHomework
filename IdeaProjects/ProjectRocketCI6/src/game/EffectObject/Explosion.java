@@ -6,14 +6,18 @@ import base.Vector2D;
 import game.enemy.Enemy;
 import renderer.ImageRenderer;
 
+import java.util.Random;
+
 public class Explosion extends GameObject {
 
     public FrameCounter frameCounter;
     public Vector2D velocity;
+    public Random random;
 
 
     public Explosion() {
-        this.frameCounter = new FrameCounter(3);
+        this.random = new Random();
+        this.frameCounter = new FrameCounter(random.nextInt(3)+1);
 
         this.velocity = new Vector2D();
     }
@@ -26,9 +30,9 @@ public class Explosion extends GameObject {
 
         if(frameCounter.run()) {
             if (imageRenderer != null) {
-                imageRenderer.width -= 1;
-                imageRenderer.height -= 1;
-                if (imageRenderer.width == 0 || imageRenderer.height == 0) {
+                imageRenderer.width -= 2;
+                imageRenderer.height -= 2;
+                if (imageRenderer.width <= 0 || imageRenderer.height <= 0) {
                     this.isAlive = false;
                 }
             }

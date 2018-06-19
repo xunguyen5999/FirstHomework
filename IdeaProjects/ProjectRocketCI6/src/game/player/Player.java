@@ -8,7 +8,9 @@ import game.EffectObject.Shield;
 import game.EffectObject.Smoke;
 import game.EffectObject.TripleShot;
 import game.bullet.Bullet;
+import game.bullet.BulletEnemy;
 import game.enemy.Enemy;
+import game.enemy.SpecialEnemy;
 import physic.BoxCollider;
 import physic.PhysicBody;
 import physic.RunHitObject;
@@ -44,6 +46,8 @@ public class Player extends GameObject implements PhysicBody {
                 Enemy.class,
                 Bullet.class,
                 TripleShot.class,
+                BulletEnemy.class,
+                SpecialEnemy.class,
 
                 Shield.class);
         this.life =1;
@@ -70,7 +74,7 @@ public class Player extends GameObject implements PhysicBody {
 
     @Override
     public void getHit(GameObject gameObject) {
-        if(gameObject instanceof Enemy) {
+        if(gameObject instanceof Enemy || gameObject instanceof SpecialEnemy || gameObject instanceof BulletEnemy) {
             if(this.life==1){
                 this.isAlive = false;
             }

@@ -1,5 +1,6 @@
 package base;
 
+
 import game.player.Player;
 import physic.BoxCollider;
 import physic.PhysicBody;
@@ -18,7 +19,6 @@ public class GameObjectManager {
     private GameObjectManager() {
         this.list = new ArrayList<>();
         this.tempList = new ArrayList<>();
-
     }
 
     public void add(GameObject gameObject) {
@@ -50,9 +50,8 @@ public class GameObjectManager {
     }
 
 
-    public <T extends GameObject> T checkCollision(BoxCollider boxCollider, Class<T> cls) {
-        return (T) this.list
-                .stream()
+    public <T extends GameObject> T checkCollision(BoxCollider boxCollider, Class<T> cls){
+        return (T) this.list.stream()
                 .filter(gameObject -> gameObject.isAlive)
                 .filter(gameObject -> cls.isInstance(gameObject))
                 .filter(gameObject -> gameObject instanceof PhysicBody)
@@ -62,18 +61,20 @@ public class GameObjectManager {
                 })
                 .findFirst()
                 .orElse(null);
+
     }
 
-    public <T extends GameObject> T recycle(Class<T> cls) {
-        T object = (T) this.list
+    public <T extends GameObject> T recycle(Class<T> cls){
+        T object = (T)this.list
                 .stream()
                 .filter(gameObject -> !gameObject.isAlive)
                 .filter(gameObject -> cls.isInstance(gameObject))
                 .findFirst()
                 .orElse(null);
-        if (object != null) {
+        if (object!= null){
             object.isAlive = true;
-        } else {
+        }
+        else{
             try {
                 object = cls.newInstance();
                 this.add(object);
@@ -82,5 +83,20 @@ public class GameObjectManager {
             }
         }
         return object;
+
     }
+
+    public  <T extends GameObject> long countObjectAlive(Class<T> cls){
+        return this.list.stream()
+                .filter(gameObject -> gameObject.isAlive)
+                .filter(gameObject -> cls.isInstance(gameObject))
+                .count();
+    }
+
+    public void killObject(GameObject gameObject){
+        if (gameObject.position.x <0 || gameObject.position.x >1024 || gameObject.position.y <0 ||gameObject.position.y >600){
+            gameObject.isAlive = false;
+        }
+    }
+
 }

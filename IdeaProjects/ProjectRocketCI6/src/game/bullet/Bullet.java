@@ -4,6 +4,7 @@ import base.GameObject;
 import base.GameObjectManager;
 import base.Vector2D;
 import game.enemy.Enemy;
+import game.enemy.SpecialEnemy;
 import physic.BoxCollider;
 import physic.PhysicBody;
 import physic.RunHitObject;
@@ -21,7 +22,8 @@ public class Bullet extends GameObject implements PhysicBody {
         this.renderer = new ImageRenderer("resources/images/circle.png", 6, 6, Color.BLUE);
         this.boxCollider = new BoxCollider(6, 6);
         this.runHitObject = new RunHitObject(
-                Enemy.class
+                Enemy.class,
+                SpecialEnemy.class
         );
     }
 
@@ -35,7 +37,7 @@ public class Bullet extends GameObject implements PhysicBody {
 
     @Override
     public void getHit(GameObject gameObject) {
-        if (gameObject instanceof Enemy) {
+        if (gameObject instanceof Enemy || gameObject instanceof SpecialEnemy) {
             this.isAlive = false;
         }
 
